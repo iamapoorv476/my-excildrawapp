@@ -9,15 +9,15 @@ export async function getExistingShapes(roomId: string) {
         .map((x: { message: string }) => {
             try {
                 const messageData = JSON.parse(x.message);
-                // Only return if it has a shape property
+                
                 return messageData.shape || null;
             } catch (e) {
-                // Skip non-JSON messages (like "hi")
+                
                 console.log("Skipping non-JSON message:", x.message);
                 return null;
             }
         })
-        .filter((shape) => shape !== null); // Remove null values
+        .filter((shape) => shape !== null); 
 
     return shapes;
 }

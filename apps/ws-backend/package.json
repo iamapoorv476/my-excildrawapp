@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -b",
     "start": "node ./dist/index.js",
-    "dev": " npm run start"
+    "dev": "tsc -b && node --watch ./dist/index.js"
   },
   "dependencies": {
     "@repo/backend-common": "workspace:*",

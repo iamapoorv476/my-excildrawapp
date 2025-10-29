@@ -1,3 +1,5 @@
+// apps/ws-backend/src/index.ts
+//@ts-ignore
 import express from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config";
