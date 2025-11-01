@@ -9,36 +9,36 @@ export function RoomCanvas({roomId}: {roomId: string}) {
     useEffect(() => {
         const token = localStorage.getItem("token");
         
-        console.log("🔍 Token:", token ? "Found" : "Not found");
+        console.log(" Token:", token ? "Found" : "Not found");
         
         if (!token) {
             setError("No authentication token found. Please sign in.");
             return;
         }
 
-        // Log the token for debugging (remove in production)
-        console.log("🔑 Token value:", token);
-        console.log("📏 Token length:", token.length);
+        
+       // console.log(" Token value:", token);
+        //console.log(" Token length:", token.length);
         
         // Check if token looks valid (should have 3 parts separated by dots for JWT)
         const tokenParts = token.split('.');
-        console.log("🧩 Token parts:", tokenParts.length);
+        console.log(" Token parts:", tokenParts.length);
         
         if (tokenParts.length !== 3) {
-            console.error("❌ Token doesn't look like a valid JWT (should have 3 parts)");
+            console.error(" Token doesn't look like a valid JWT (should have 3 parts)");
             setError("Invalid token format. Please sign in again.");
             localStorage.removeItem("token");
             return;
         }
 
-        console.log("🔌 Connecting to WebSocket...");
+        console.log(" Connecting to WebSocket...");
         
         // Encode the token to handle any special characters
         const encodedToken = encodeURIComponent(token);
         const ws = new WebSocket(`ws://localhost:8080?token=${encodedToken}`);
 
         ws.onopen = () => {
-            console.log("✅ WebSocket connected!");
+            console.log(" WebSocket connected!");
             setSocket(ws);
             
             const joinMessage = {
@@ -46,43 +46,43 @@ export function RoomCanvas({roomId}: {roomId: string}) {
                 roomId
             };
             
-            console.log("📤 Sending join_room:", joinMessage);
+            console.log(" Sending join_room:", joinMessage);
             ws.send(JSON.stringify(joinMessage));
         };
 
         ws.onmessage = (event) => {
-            console.log("📥 Received message:", event.data);
+            console.log(" Received message:", event.data);
             try {
                 const message = JSON.parse(event.data);
-                console.log("📋 Parsed message:", message);
+                console.log(" Parsed message:", message);
                 
                 if (message.type === "error") {
-                    console.error("❌ Server error:", message.message);
+                    console.error(" Server error:", message.message);
                     setError(message.message);
                     ws.close();
                 }
                 
                 if (message.type === "joined_room") {
-                    console.log("✅ Successfully joined room:", message.roomId);
+                    console.log(" Successfully joined room:", message.roomId);
                 }
                 
                 if (message.type === "connected") {
-                    console.log("✅ Connected as user:", message.userId);
+                    console.log(" Connected as user:", message.userId);
                 }
             } catch (e) {
-                console.log("📝 Non-JSON message:", event.data);
+                console.log(" Non-JSON message:", event.data);
             }
         };
 
         ws.onerror = (error) => {
-            console.error("❌ WebSocket error:", error);
+            console.error(" WebSocket error:", error);
             setError("Failed to connect to server");
         };
 
         ws.onclose = (event) => {
-            console.log("🔌 WebSocket closed. Code:", event.code, "Reason:", event.reason || "No reason provided");
+            console.log(" WebSocket closed. Code:", event.code, "Reason:", event.reason || "No reason provided");
             
-            // If connection was rejected due to auth issues
+            
             if (event.code === 1008 || event.reason?.includes("token") || event.reason?.includes("auth")) {
                 setError("Authentication failed. Please sign in again.");
                 localStorage.removeItem("token");
@@ -93,7 +93,7 @@ export function RoomCanvas({roomId}: {roomId: string}) {
 
         return () => {
             if (ws.readyState === WebSocket.OPEN) {
-                console.log("🧹 Cleaning up - closing WebSocket");
+                console.log(" Cleaning up - closing WebSocket");
                 ws.close();
             }
         };
@@ -103,7 +103,7 @@ export function RoomCanvas({roomId}: {roomId: string}) {
         return (
             <div className="flex items-center justify-center h-screen bg-gray-900">
                 <div className="text-center bg-gray-800 p-8 rounded-lg shadow-xl">
-                    <div className="text-6xl mb-4">⚠️</div>
+                    <div className="text-6xl mb-4"></div>
                     <p className="text-red-400 mb-6 text-lg">{error}</p>
                     <div className="space-x-4">
                         <button 

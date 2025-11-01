@@ -70,14 +70,14 @@ export function AuthPage({ isSignin }: { isSignin: boolean }) {
                 if (savedToken === data.token) {
                     console.log(" Token verified in localStorage");
                 } else {
-                    console.error("❌ Token mismatch after saving!");
+                    console.error(" Token mismatch after saving!");
                 }
                 
                 // Navigate to canvas
                 router.push("/canvas");
             } else {
                 // After successful signup, redirect to signin
-                console.log("✅ Signup successful, redirecting to signin");
+                console.log(" Signup successful, redirecting to signin");
                 router.push("/signin");
             }
         } catch (err) {

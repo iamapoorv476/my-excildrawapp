@@ -60,7 +60,7 @@ function startWebSocketServer(port: number) {
     wss.on("connection", (ws: WebSocket, request) => {
       let connectionUserId: string | null = null;
 
-      console.log("🔌 New WebSocket connection incoming...");
+      console.log(" New WebSocket connection incoming...");
       const url = request.url;
       if (!url) {
         console.error(" Connection rejected: No URL provided.");
@@ -251,7 +251,7 @@ function startWebSocketServer(port: number) {
         }
 
         const reasonString = reason ? reason.toString() : "No reason";
-        console.log(`🔌 WebSocket closed for user ${userIdentifier}. Code: ${code}, Reason: ${reasonString}`);
+        console.log(` WebSocket closed for user ${userIdentifier}. Code: ${code}, Reason: ${reasonString}`);
       });
 
       // --- Confirm Connection ---

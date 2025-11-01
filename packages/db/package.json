@@ -11,7 +11,8 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "6.17.1"
+    "@prisma/client": "6.17.1",
+    "dotenv": "^17.2.3"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
