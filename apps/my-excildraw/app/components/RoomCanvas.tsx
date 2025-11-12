@@ -35,7 +35,7 @@ export function RoomCanvas({roomId}: {roomId: string}) {
         
         // Encode the token to handle any special characters
         const encodedToken = encodeURIComponent(token);
-        const ws = new WebSocket(`ws://localhost:8080?token=${encodedToken}`);
+        const ws = new WebSocket(`process.env.NEXT_PUBLIC_WS_URL?token=${encodedToken}`);
 
         ws.onopen = () => {
             console.log(" WebSocket connected!");

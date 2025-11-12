@@ -1,0 +1,17 @@
+# .dockerignore
+
+# Ignore all node_modules
+**/node_modules
+
+# Ignore git
+.git
+
+# Ignore build artifacts and caches
+**/dist
+**/.next
+.turbo
+
+# Ignore environment files and logs
+*.log
+.env
+.env.*

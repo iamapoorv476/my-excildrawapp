@@ -1,0 +1,39 @@
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+
+RUN npm install -g pnpm turbo
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+
+
+COPY apps/my-excildraw/package.json ./apps/my-excildraw/
+COPY apps/http-backend/package.json  ./apps/http-backend/
+COPY apps/ws-backend/package.json ./apps/ws-backend/
+COPY packages/ui/package.json ./packages/ui/
+COPY packages/db/package.json  ./packages/db/
+COPY packages/common/package.json ./packages/common/
+COPY packages/backend-common/package.json ./packages/backend-common/
+
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+RUN turbo build --filter=my-excildraw
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=builder /app/apps/my-excildraw/.next/standalone ./ 
+
+COPY --from=builder /app/apps/my-excildraw/public ./apps/my-excildraw/public
+COPY --from=builder /app/apps/my-excildraw/.next/static ./apps/my-excildraw/.next/static
+
+EXPOSE 3000
+ENV PORT 3000
+
+
+CMD ["node", "apps/my-excildraw/server.js"]

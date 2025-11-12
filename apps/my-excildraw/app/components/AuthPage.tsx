@@ -22,7 +22,7 @@ export function AuthPage({ isSignin }: { isSignin: boolean }) {
 
             console.log(" Attempting to", isSignin ? "sign in" : "sign up");
             
-            const response = await fetch(`http://localhost:3001${endpoint}`, {
+            const response = await fetch(`process.env.NEXT_PUBLIC_API_URL${endpoint}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

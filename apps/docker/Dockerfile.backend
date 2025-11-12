@@ -1,0 +1,40 @@
+
+FROM node:20-alpine AS builder
+WORKDIR /app
+RUN npm install -g pnpm turbo
+COPY . .
+RUN pnpm install --frozen-lockfile
+RUN turbo build --filter=http-backend
+
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+RUN npm install -g pnpm prisma
+
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+
+COPY apps/http-backend/package.json ./apps/http-backend/
+COPY packages/db/package.json ./packages/db/
+COPY packages/common/package.json ./packages/common/
+COPY packages/backend-common/package.json ./packages/backend-common/
+
+
+RUN pnpm install --prod --frozen-lockfile
+
+
+COPY --from=builder /app/apps/http-backend/dist ./apps/http-backend/dist
+COPY --from=builder /app/packages/db/dist ./packages/db/dist
+COPY --from=builder /app/packages/common/dist ./packages/common/dist
+COPY --from=builder /app/packages/backend-common/dist ./packages/backend-common/dist
+
+
+COPY packages/db/prisma ./packages/db/prisma
+
+
+RUN cd packages/db && npx prisma generate
+
+EXPOSE 3001
+CMD ["node", "apps/http-backend/dist/index.js"]

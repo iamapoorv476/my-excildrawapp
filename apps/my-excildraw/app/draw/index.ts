@@ -167,7 +167,7 @@ function redraw(existing: Shape[], canvas: HTMLCanvasElement, ctx: CanvasRenderi
 }
 
 async function getExistingShapes(roomId: string) {
-  const res = await axios.get(`http://localhost:3001/chats/${roomId}`);
+  const res = await axios.get(`process.env.NEXT_PUBLIC_API_URL${roomId}`);
   const messages = res.data.messages;
   return messages.map((x: { message: string }) => JSON.parse(x.message).shape);
 }
