@@ -50,25 +50,25 @@ jobs:
           push: true
           tags: ${{ env.WS_IMAGE }}
 
-      - name: SSH into server, create .env, pull, and deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_SERVER }}
-          username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
-          script: |
-            cd ~/staging
+    #  - name: SSH into server, create .env, pull, and deploy
+    #    uses: appleboy/ssh-action@master
+    #    with:
+     #     host: ${{ secrets.HOST_SERVER }}
+       #   username: ${{ secrets.HOST_USERNAME }}
+       #   key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
+        #  script: |
+        #    cd ~/staging
 
-            echo "DB_USER=${{ secrets.DB_USER }}" > .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+           # echo "DB_USER=${{ secrets.DB_USER }}" > .env
+           # echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+           # echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+           # echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+           # echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
-            docker pull ${{ env.FRONTEND_IMAGE }}
-            docker pull ${{ env.API_IMAGE }}
-            docker pull ${{ env.WS_IMAGE }}
+           # docker pull ${{ env.FRONTEND_IMAGE }}
+            #docker pull ${{ env.API_IMAGE }}
+           # docker pull ${{ env.WS_IMAGE }}
 
-            docker-compose up -d --no-deps frontend api ws
+           # docker-compose up -d --no-deps frontend api ws
 
-            docker image prune -f
+            #docker image prune -f
